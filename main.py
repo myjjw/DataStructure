@@ -13,23 +13,31 @@ def main():
             shift.append([int(start), int(end)])
 
         shift.sort(key=lambda start: start[0])
-        r = 0
-
+        print(shift)
+        own_shift = []
         for i in range(int(n)):
-            s = e = -1
-            sum = 0
-            for j in range(int(n)):
-                if i != j:
-                    if shift[j][0] <= e: e = max(e, shift[j][1])
-                    else:
-                        sum += e - s
-                        s = shift[j][0]
-                        e = shift[j][1]
+            own_shift.append(shift[i][1] - shift[i][0])
+        print(own_shift)
+        count = []
+        for i in range(int(n)-1):
+            if shift[i][1] > shift[i+1][0]:
+                count.append(shift[i][1] - shift[i+1][0])
+                own_shift[i] -= shift[i][1] - shift[i+1][0]
+                own_shift[i+1] -= shift[i][1] - shift[i+1][0]
 
-            sum += e - s
-            r = max(r, sum)
+        print(own_shift)
+        min_v = min(own_shift)
+        min_index = own_shift.index(min_v)
+        fire_shift = shift.pop(min_index)
+        final_shift = []
+        answer = 0
+        for i in range(int(n) - 1):
+            final_shift.append(shift[i][1] - shift[i][0])
+            answer += final_shift[i]
+        print(answer)
+
         with open('10.out', 'w') as an:
-            an.write(str(r))
+            an.write(str(answer))
 
 
 # Press the green button in the gutter to run the script.
